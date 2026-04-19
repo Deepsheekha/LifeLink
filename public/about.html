@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About LifeLink</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .about-content {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2rem 0 4rem;
+    }
+
+    .about-section {
+      background: var(--white);
+      border: 1px solid var(--gray-line);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .about-section h2 {
+      color: var(--red-main);
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-section p {
+      color: var(--text-mid);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 0.8rem;
+    }
+
+    /* --- Compatibility Table --- */
+    .compat-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 1rem;
+    }
+
+    .compat-table th {
+      background-color: var(--red-pale);
+      color: var(--red-main);
+      padding: 10px;
+      text-align: center;
+      border: 1px solid var(--red-border);
+      font-weight: 700;
+    }
+
+    .compat-table td {
+      padding: 9px 10px;
+      text-align: center;
+      border: 1px solid var(--gray-line);
+      color: var(--text-mid);
+    }
+
+    .compat-table tr:nth-child(even) td {
+      background-color: var(--off-white);
+    }
+
+    .compat-yes { color: var(--green); font-weight: 700; }
+    .compat-no  { color: var(--text-light); }
+
+    /* --- FAQ --- */
+    .faq-item {
+      border-bottom: 1px solid var(--gray-line);
+      padding: 1rem 0;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-question {
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+      cursor: pointer;
+    }
+
+    .faq-answer {
+      color: var(--text-mid);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      display: none;
+    }
+
+    .faq-answer.open {
+      display: block;
+    }
+
+    /* --- CTA Section --- */
+    .cta-section {
+      background: linear-gradient(135deg, var(--red-pale), #fff0f0);
+      border: 1px solid var(--red-border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .cta-section h2 {
+      color: var(--red-main);
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .cta-section p {
+      color: var(--text-mid);
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo"><span>🩸</span> LifeLink</div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="donors.html">Find Donors</a></li>
+      <li><a href="hospitals.html">Blood Banks</a></li>
+      <li><a href="request.html">Request Blood</a></li>
+      <li><a href="register.html" class="nav-cta">Become a Donor</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1>About LifeLink</h1>
+      <p>Why we exist and how it all works.</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="about-content">
+
+      <!-- Mission -->
+      <div class="about-section">
+        <h2>🩸 Our Mission</h2>
+        <p>
+          Every year, millions of lives depend on timely access to blood. Yet blood banks frequently run out
+          of critical blood types, and patients in need struggle to find donors quickly.
+        </p>
+        <p>
+          LifeLink was built to close that gap — connecting willing donors, hospitals, and patients in one
+          simple platform. No complicated process. No waiting. Just faster, more human connections when
+          they matter most.
+        </p>
+      </div>
+
+      <!-- Who We Serve -->
+      <div class="about-section">
+        <h2>👥 Who We Serve</h2>
+        <p><strong>Blood Donors</strong> — Individuals aged 18–65 who are healthy and willing to donate. LifeLink helps them register, tracks their eligibility window (90 days between donations), and connects them with people in need near them.</p>
+        <p><strong>Hospitals & Blood Banks</strong> — Medical institutions can register their facility, list their blood stock levels, and post urgent requirements. Patients and donors can see real-time availability.</p>
+        <p><strong>Patients & Families</strong> — Anyone facing a medical emergency can post a blood request. The request appears publicly so eligible donors can step forward.</p>
+      </div>
+
+      <!-- 90-Day Rule -->
+      <div class="about-section">
+        <h2>⏱ The 90-Day Eligibility Rule</h2>
+        <p>
+          Whole blood donors must wait at least <strong>90 days (3 months)</strong> between donations.
+          This is a medical requirement to allow the body to fully replenish its blood supply.
+        </p>
+        <p>
+          When a donor registers on LifeLink, they enter their last donation date. The system automatically
+          calculates whether they are eligible to donate again. If not, it tells them exactly when they will be eligible.
+        </p>
+        <p>
+          After a recorded donation, the 90-day clock starts fresh. This ensures donor health is always protected.
+        </p>
+      </div>
+
+      <!-- Blood Type Compatibility -->
+      <div class="about-section">
+        <h2>🔬 Blood Type Compatibility</h2>
+        <p>Not all blood types are compatible. Here is a simple reference:</p>
+
+        <table class="compat-table">
+          <thead>
+            <tr>
+              <th>Donor Type</th>
+              <th>Can Donate To</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="blood-badge" style="display:table-cell;">O-</td>  <td>Everyone (Universal Donor)</td></tr>
+            <tr><td class="blood-badge" style="display:table-cell;">O+</td>  <td>O+, A+, B+, AB+</td></tr>
+            <tr><td class="blood-badge" style="display:table-cell;">A-</td>  <td>A-, A+, AB-, AB+</td></tr>
+            <tr><td class="blood-badge" style="display:table-cell;">A+</td>  <td>A+, AB+</td></tr>
+            <tr><td class="blood-badge" style="display:table-cell;">B-</td>  <td>B-, B+, AB-, AB+</td></tr>
+            <tr><td class="blood-badge" style="display:table-cell;">B+</td>  <td>B+, AB+</td></tr>
+            <tr><td class="blood-badge" style="display:table-cell;">AB-</td> <td>AB-, AB+</td></tr>
+            <tr><td class="blood-badge" style="display:table-cell;">AB+</td> <td>AB+ only</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- FAQ -->
+      <div class="about-section">
+        <h2>❓ Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">▶ Is my personal data safe on LifeLink?</div>
+          <div class="faq-answer">Yes. Donor emails are never shown publicly. Only the name, blood type, and city are visible to others searching for donors.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">▶ Can I donate more frequently than 90 days?</div>
+          <div class="faq-answer">No. Whole blood donation requires a 90-day gap for safety. For platelet or plasma donations, the rules differ and are handled separately by hospitals.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">▶ How do hospitals update their blood stock?</div>
+          <div class="faq-answer">Hospitals registered on LifeLink can update their stock levels via the API endpoint PUT /api/hospitals/:id/stock. We are working on a hospital dashboard for easier updates.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">▶ What happens after I donate?</div>
+          <div class="faq-answer">A hospital or admin can record your donation using the donor ID. Your last donation date updates, and the 90-day window starts again. You will appear as "not yet eligible" to other users until the window passes.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" onclick="toggleFAQ(this)">▶ Is LifeLink free to use?</div>
+          <div class="faq-answer">Yes. LifeLink is completely free for donors, patients, and hospitals.</div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-section">
+        <h2>Ready to Make a Difference?</h2>
+        <p>Register as a donor or find someone in need right now.</p>
+        <div class="cta-buttons">
+          <a href="register.html" class="btn btn-primary">Become a Donor</a>
+          <a href="request.html"  class="btn btn-outline">Request Blood</a>
+          <a href="donors.html"   class="btn btn-outline">Find Donors</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>🩸 LifeLink &mdash; Connecting donors, hospitals and lives.</p>
+    <p class="mt-1">
+      <a href="/">Home</a> &bull;
+      <a href="about.html">About</a> &bull;
+      <a href="register.html">Register</a>
+    </p>
+  </footer>
+
+  <script>
+    function toggleFAQ(el) {
+      const answer = el.nextElementSibling;
+      answer.classList.toggle("open");
+      el.textContent = answer.classList.contains("open")
+        ? el.textContent.replace("▶", "▼")
+        : el.textContent.replace("▼", "▶");
+    }
+  </script>
+
+</body>
+</html>

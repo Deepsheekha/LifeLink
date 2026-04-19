@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Blood - LifeLink</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .request-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 2rem;
+      padding: 1.5rem 0 3rem;
+      align-items: start;
+    }
+
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--gray-line);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .form-card h2 {
+      color: var(--red-main);
+      margin-bottom: 1.5rem;
+      font-size: 1.3rem;
+    }
+
+    /* --- Active Requests List --- */
+    .requests-panel {
+      background: var(--white);
+      border: 1px solid var(--gray-line);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 80px;
+
+      height: 380px;
+      display: flex;
+      flex-direction: column;
+    }
+    #requests-list {
+      overflow-y: auto;
+      flex: 1;
+      padding-right: 5px;
+    }
+
+    #requests-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    #requests-list::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 4px;
+    }
+
+    .requests-panel h3 {
+      color: var(--red-main);
+      font-size: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .request-row {
+      border-bottom: 1px solid var(--gray-line);
+      padding: 0.9rem 0;
+    }
+
+    .request-row:last-child {
+      border-bottom: none;
+    }
+
+    .request-row h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0.2rem;
+      color: var(--text-dark);
+    }
+
+    .request-row p {
+      font-size: 0.8rem;
+      color: var(--text-mid);
+    }
+
+    .urgency-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .tag-critical { background: var(--red-pale); color: var(--red-main); }
+    .tag-urgent   { background: #fef9e7; color: #b7770d; }
+    .tag-normal   { background: #eaf4fb; color: #2471a3; }
+
+    /* --- Urgency Selector --- */
+    .urgency-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+    }
+
+    .urgency-option {
+      text-align: center;
+      padding: 10px 6px;
+      border: 2px solid var(--gray-line);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s, background-color 0.2s;
+      font-size: 0.85rem;
+      color: var(--text-mid);
+    }
+
+    .urgency-option:hover {
+      border-color: var(--red-border);
+    }
+
+    .urgency-option.selected {
+      border-color: var(--red-main);
+      background-color: var(--red-pale);
+      color: var(--red-main);
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .request-layout { grid-template-columns: 1fr; }
+      .requests-panel { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo"><span>🩸</span> LifeLink</div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="donors.html">Find Donors</a></li>
+      <li><a href="hospitals.html">Blood Banks</a></li>
+      <li><a href="request.html" class="active">Request Blood</a></li>
+      <li><a href="register.html" class="nav-cta">Become a Donor</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1>Request Blood</h1>
+      <p>Post a blood request and connect with donors nearby.</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="request-layout">
+
+      <!-- Request Form -->
+      <div class="form-card">
+        <h2>Submit a Blood Request</h2>
+
+        <div id="form-message"></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="requesterName">Your Name *</label>
+            <input type="text" id="requesterName" placeholder="Full name" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" placeholder="+91 98765 43210" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="requesterType">I am a *</label>
+          <select id="requesterType" required>
+            <option value="">-- Select --</option>
+            <option value="patient">Patient</option>
+            <option value="family">Family Member of Patient</option>
+            <option value="hospital">Hospital / Blood Bank</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bloodType">Blood Type Needed *</label>
+            <select id="bloodType" required>
+              <option value="">-- Select --</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option>
+              <option>O+</option><option>O-</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="unitsNeeded">Units Needed *</label>
+            <input type="number" id="unitsNeeded" value="1" min="1" max="20" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="hospital">Hospital Name *</label>
+          <input type="text" id="hospital" placeholder="Where is the blood needed?" required />
+        </div>
+
+        <div class="form-group">
+          <label>Urgency Level *</label>
+          <div class="urgency-selector">
+            <div class="urgency-option" data-value="normal"   onclick="selectUrgency(this)">🟢 Normal</div>
+            <div class="urgency-option" data-value="urgent"   onclick="selectUrgency(this)">🟡 Urgent</div>
+            <div class="urgency-option selected" data-value="critical" onclick="selectUrgency(this)">🔴 Critical</div>
+          </div>
+          <input type="hidden" id="urgency" value="critical" />
+        </div>
+
+        <div class="form-group">
+          <label for="message">Additional Message (optional)</label>
+          <textarea id="message" rows="3" placeholder="Any other information donors should know..."></textarea>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitRequest()">Submit Request</button>
+      </div>
+
+      <!-- Active Requests Sidebar -->
+      <div class="requests-panel">
+        <h3>📋 Active Requests</h3>
+
+        <div class="form-group">
+          <select id="filter-blood" onchange="loadRequests()">
+            <option value="">All Blood Types</option>
+            <option>A+</option><option>A-</option>
+            <option>B+</option><option>B-</option>
+            <option>AB+</option><option>AB-</option>
+            <option>O+</option><option>O-</option>
+          </select>
+        </div>
+
+        <div id="requests-list">
+          <p class="text-muted" style="font-size:0.85rem;">Loading requests...</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>🩸 LifeLink &mdash; Connecting donors, hospitals and lives.</p>
+  </footer>
+
+  <script>
+  function selectUrgency(el) {
+    document.querySelectorAll(".urgency-option").forEach(opt => opt.classList.remove("selected"));
+    el.classList.add("selected");
+    document.getElementById("urgency").value = el.dataset.value;
+  }
+
+  function validateRequestForm(body) {
+    if (!body.requesterName || !body.phone || !body.requesterType || !body.bloodType || !body.hospital) {
+      showMsg("form-message", "All required fields must be filled.", "error");
+      return false;
+    }
+
+    // Phone validation
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(body.phone)) {
+      showMsg("form-message", "Enter valid 10-digit phone number.", "error");
+      return false;
+    }
+
+    // Units validation
+    if (body.unitsNeeded < 1 || body.unitsNeeded > 20) {
+      showMsg("form-message", "Units must be between 1 and 20.", "error");
+      return false;
+    }
+
+    return true;
+  }
+
+  async function submitRequest() {
+  const name  = document.getElementById("requesterName").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const type  = document.getElementById("requesterType").value;
+  const blood = document.getElementById("bloodType").value;
+  const units = parseInt(document.getElementById("unitsNeeded").value);
+  const hospital = document.getElementById("hospital").value.trim();
+  const urgency  = document.getElementById("urgency").value;
+  const message  = document.getElementById("message").value.trim();
+
+  // --- VALIDATION ---
+
+  // Name: only letters + spaces (no numbers)
+  const nameRegex = /^[A-Za-z\s]{2,50}$/;
+  if (!nameRegex.test(name)) {
+    showMsg("form-message", "Enter a valid name (letters only).", "error");
+    return;
+  }
+
+  // Phone: 10 digits (India)
+  const phoneRegex = /^[0-9]{10}$/;
+  if (!phoneRegex.test(phone)) {
+    showMsg("form-message", "Phone must be 10 digits.", "error");
+    return;
+  }
+
+  // Dropdown checks
+  if (!type || !blood || !hospital) {
+    showMsg("form-message", "Please fill all required fields.", "error");
+    return;
+  }
+
+  // Hospital: at least 3 chars, not just numbers
+  if (hospital.length < 3 || /^[0-9]+$/.test(hospital)) {
+    showMsg("form-message", "Enter a valid hospital name.", "error");
+    return;
+  }
+
+  // Units check
+  if (units < 1 || units > 20) {
+    showMsg("form-message", "Units must be between 1 and 20.", "error");
+    return;
+  }
+
+  // --- SEND DATA ---
+  const body = {
+    requesterName: name,
+    phone,
+    requesterType: type,
+    bloodType: blood,
+    unitsNeeded: units,
+    hospital,
+    urgency,
+    message,
+  };
+
+  try {
+    const res = await fetch("/api/requests/new", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      showMsg("form-message", data.error || "Submission failed.", "error");
+      return;
+    }
+
+    showMsg("form-message", "✅ Request submitted & donors notified!", "success");
+    loadRequests();
+
+  } catch (err) {
+    showMsg("form-message", "Server error. Is the server running?", "error");
+  }
+}
+
+  async function loadRequests() {
+    const bloodType = document.getElementById("filter-blood").value;
+    let url = "/api/requests";
+    if (bloodType) url += `?bloodType=${encodeURIComponent(bloodType)}`;
+
+    const list = document.getElementById("requests-list");
+
+    try {
+      const res = await fetch(url);
+      const requests = await res.json();
+
+      if (requests.length === 0) {
+        list.innerHTML = '<p style="font-size:0.85rem;">No open requests.</p>';
+        return;
+      }
+
+      list.innerHTML = requests.map(r => `
+        <div class="request-row">
+          <h4>
+            ${r.requesterName}
+            <span class="blood-badge">${r.bloodType}</span>
+            <span class="urgency-tag tag-${r.urgency}">${r.urgency}</span>
+          </h4>
+          <p>🏥 ${r.hospital} • ${r.unitsNeeded} unit(s)</p>
+          <p>📞 ${r.phone}</p>
+          ${r.message ? `<p>"${r.message}"</p>` : ""}
+        </div>
+      `).join("");
+
+    } catch {
+      list.innerHTML = '<p>Could not load requests.</p>';
+    }
+  }
+
+  function showMsg(id, text, type) {
+    const el = document.getElementById(id);
+    el.className = `alert alert-${type}`;
+    el.textContent = text;
+  }
+
+  loadRequests();
+</script>
+
+</body>
+</html>

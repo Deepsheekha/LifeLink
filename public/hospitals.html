@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blood Banks — LifeLink</title>
+
+<link rel="stylesheet" href="style.css" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+.layout {
+  padding: 2rem 0;
+}
+
+#map {
+  height: 320px;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.card-header {
+  background: #fdecea;
+  padding: 1rem 1.2rem;
+}
+
+.card-header h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.card-body {
+  padding: 1rem 1.2rem;
+}
+
+.stock-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .5rem;
+  margin-top: .8rem;
+}
+
+.stock {
+  text-align: center;
+  padding: .4rem;
+  border-radius: 6px;
+  font-size: .8rem;
+}
+
+.good { background: #eafaf1; }
+.low { background: #fef9e7; }
+.critical { background: #fdecea; }
+
+.legend {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: .8rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+@media(max-width:768px){
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="nav-logo">🩸 LifeLink</div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="donors.html">Find Donors</a></li>
+    <li><a href="hospitals.html" class="active">Blood Banks</a></li>
+    <li><a href="request.html">Request Blood</a></li>
+    <li><a href="register.html" class="nav-cta">Become a Donor</a></li>
+  </ul>
+</nav>
+
+<div class="container layout">
+
+  <h1>Hospital Blood Banks</h1>
+  <p>Check blood availability near you</p>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <span><span class="dot" style="background:#eafaf1"></span> Good</span>
+    <span><span class="dot" style="background:#fef9e7"></span> Low</span>
+    <span><span class="dot" style="background:#fdecea"></span> Critical</span>
+  </div>
+
+  <!-- MAP -->
+  <div id="map"></div>
+
+  <!-- GRID -->
+  <div id="grid" class="grid">
+    <p>Loading...</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>🩸 LifeLink — Saving lives together</p>
+</footer>
+
+<script>
+const map = L.map("map").setView([13.0827, 80.2707], 11);
+
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png")
+  .addTo(map);
+
+const TYPES = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+async function loadHospitals() {
+  const grid = document.getElementById("grid");
+
+  try {
+    const res = await fetch("/api/hospitals");
+    const data = await res.json();
+
+    if (!data.length) {
+      grid.innerHTML = "No hospitals yet";
+      return;
+    }
+
+    grid.innerHTML = data.map(h => card(h)).join("");
+
+    const bounds = [];
+
+    data.forEach(h => {
+      if (h.location?.lat && h.location?.lng) {
+        const m = L.marker([h.location.lat, h.location.lng])
+          .bindPopup(`<b>${h.name}</b><br>${h.address}`);
+
+        m.addTo(map);
+        bounds.push([h.location.lat, h.location.lng]);
+      }
+    });
+
+    if (bounds.length) map.fitBounds(bounds);
+
+  } catch {
+    grid.innerHTML = "Error loading hospitals";
+  }
+}
+
+function card(h) {
+  const stock = h.bloodStock || {};
+
+  const items = TYPES.map(t => {
+    const units = stock[t] || 0;
+
+    let cls = "critical";
+    if (units >= 10) cls = "good";
+    else if (units > 0) cls = "low";
+
+    return `
+      <div class="stock ${cls}">
+        <b>${t}</b><br>${units}
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <div class="card">
+      <div class="card-header">
+        <h3>🏥 ${h.name}</h3>
+        <small>${h.address}</small><br>
+        <small>${h.phone}</small>
+      </div>
+
+      <div class="card-body">
+        <strong style="font-size:.85rem">Blood Stock</strong>
+        <div class="stock-grid">${items}</div>
+      </div>
+    </div>
+  `;
+}
+
+loadHospitals();
+</script>
+
+</body>
+</html>

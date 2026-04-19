@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Become a Donor - LifeLink</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .register-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 2rem;
+      padding: 2rem 0 3rem;
+    }
+
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--gray-line);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .form-card h2 {
+      color: var(--red-main);
+      margin-bottom: 1.5rem;
+      font-size: 1.3rem;
+    }
+
+    /* --- Eligibility Info Sidebar --- */
+    .info-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .info-box {
+      background: var(--white);
+      border: 1px solid var(--gray-line);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      box-shadow: var(--shadow);
+    }
+
+    .info-box h3 {
+      color: var(--red-main);
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .info-box ul {
+      list-style: none;
+      color: var(--text-mid);
+      font-size: 0.88rem;
+    }
+
+    .info-box ul li {
+      padding: 0.3rem 0;
+      border-bottom: 1px solid var(--gray-line);
+    }
+
+    .info-box ul li:last-child {
+      border-bottom: none;
+    }
+
+    .info-box ul li::before {
+      content: "✓  ";
+      color: var(--green);
+      font-weight: bold;
+    }
+
+    /* --- Result Box after Registration --- */
+    .result-box {
+      display: none;
+      margin-top: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .register-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-logo"><span>🩸</span> LifeLink</div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="donors.html">Find Donors</a></li>
+      <li><a href="hospitals.html">Blood Banks</a></li>
+      <li><a href="request.html">Request Blood</a></li>
+      <li><a href="register.html" class="nav-cta active">Become a Donor</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Become a Blood Donor</h1>
+      <p>Register once. Help save lives whenever you are eligible.</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="register-layout">
+
+      <!-- Registration Form -->
+      <div class="form-card">
+        <h2>Donor Registration Form</h2>
+
+        <div id="form-message"></div>
+
+        <div class="form-group">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" placeholder="Your full name" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" placeholder="your@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number *</label>
+            <input type="tel" id="phone" placeholder="+91 98765 43210" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="bloodType">Blood Type *</label>
+            <select id="bloodType" required>
+              <option value="">-- Select --</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option>
+              <option>O+</option><option>O-</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="lastDonation">Last Donation Date (if any)</label>
+            <input type="date" id="lastDonation" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">City *</label>
+            <input type="text" id="city" placeholder="Chennai" required />
+          </div>
+          <div class="form-group">
+            <label for="lat">Latitude (optional)</label>
+            <input type="number" id="lat" placeholder="13.0827" step="any" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lng">Longitude (optional)</label>
+          <input type="number" id="lng" placeholder="80.2707" step="any" />
+          <small class="text-muted">Lat & Lng are used to show your pin on the donor map. You can leave them blank.</small>
+        </div>
+
+        <button class="btn btn-primary" onclick="registerDonor()">Register as Donor</button>
+
+        <!-- Result shown after submission -->
+        <div class="result-box" id="result-box">
+          <div id="result-message" class="alert"></div>
+          <div id="result-details"></div>
+        </div>
+      </div>
+
+      <!-- Info Sidebar -->
+      <div class="info-sidebar">
+
+        <div class="info-box">
+          <h3>Who Can Donate?</h3>
+          <ul>
+            <li>Age 18 to 65 years</li>
+            <li>Weight above 50 kg</li>
+            <li>Haemoglobin ≥ 12.5 g/dL</li>
+            <li>No fever or cold in past 2 weeks</li>
+            <li>No tattoo/piercing in past 6 months</li>
+            <li>Not pregnant or nursing</li>
+          </ul>
+        </div>
+
+        <div class="info-box">
+          <h3>⏱ 90-Day Rule</h3>
+          <p style="color: var(--text-mid); font-size: 0.88rem; line-height: 1.7;">
+            Whole blood donors must wait <strong>90 days (3 months)</strong> between donations.
+            LifeLink automatically checks your last donation date and tells you when you're eligible again.
+          </p>
+        </div>
+
+        <div class="info-box">
+          <h3>Blood Types</h3>
+          <ul>
+            <li><strong>O-</strong> &mdash; Universal donor</li>
+            <li><strong>AB+</strong> &mdash; Universal recipient</li>
+            <li><strong>O+</strong> &mdash; Most common</li>
+            <li><strong>AB-</strong> &mdash; Rarest type</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>🩸 LifeLink &mdash; Connecting donors, hospitals and lives.</p>
+  </footer>
+
+  <script>
+  function validateRegisterForm() {
+    const name  = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const blood = document.getElementById("bloodType").value;
+    const city  = document.getElementById("city").value.trim();
+
+    if (!name || !email || !phone || !blood || !city) {
+      showMessage("form-message", "All required fields must be filled.", "error");
+      return false;
+    }
+
+    // Email check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      showMessage("form-message", "Invalid email format.", "error");
+      return false;
+    }
+
+    // Phone check (Indian format)
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!phoneRegex.test(phone)) {
+      showMessage("form-message", "Enter valid 10-digit Indian phone number.", "error");
+      return false;
+    }
+
+    return true;
+  }
+
+  async function registerDonor() {
+    if (!validateRegisterForm()) return;
+
+    const body = {
+      name: document.getElementById("name").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      bloodType: document.getElementById("bloodType").value,
+      lastDonationDate: document.getElementById("lastDonation").value || null,
+      location: {
+        city: document.getElementById("city").value.trim(),
+        lat: parseFloat(document.getElementById("lat").value) || null,
+        lng: parseFloat(document.getElementById("lng").value) || null
+      }
+    };
+
+    try {
+      const res = await fetch("/api/donors/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        showMessage("form-message", data.error || "Registration failed.", "error");
+        return;
+      }
+
+      document.getElementById("form-message").innerHTML = "";
+
+      const resultBox = document.getElementById("result-box");
+      const resultMsg = document.getElementById("result-message");
+      const resultDet = document.getElementById("result-details");
+
+      resultBox.style.display = "block";
+      resultMsg.className = "alert alert-success";
+      resultMsg.textContent = "✅ " + data.message;
+
+      resultDet.innerHTML = `
+        <div class="card mt-2">
+          <p><strong>Name:</strong> ${data.donor.name}</p>
+          <p><strong>Blood Type:</strong> <span class="blood-badge">${data.donor.bloodType}</span></p>
+          <p><strong>City:</strong> ${data.donor.location.city}</p>
+          <p class="mt-2 ${data.canDonateNow ? 'alert alert-success' : 'alert alert-warning'}">${data.note}</p>
+        </div>
+      `;
+    } catch (err) {
+      showMessage("form-message", "Server error. Please start backend.", "error");
+    }
+  }
+
+  function showMessage(id, text, type) {
+    const el = document.getElementById(id);
+    el.className = `alert alert-${type}`;
+    el.textContent = text;
+  }
+</script>
+
+</body>
+</html>

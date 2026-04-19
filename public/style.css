@@ -1,0 +1,335 @@
+/* =============================================
+   LifeLink - Shared Stylesheet
+   Theme: Soft red, warm whites, gentle tones
+   ============================================= */
+
+/* --- Google Fonts Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Merriweather:wght@300;400&display=swap');
+
+/* --- CSS Variables (easy to change theme colors here) --- */
+:root {
+  --red-main:    #c0392b;    /* main red - buttons, accents */
+  --red-soft:    #e74c3c;    /* lighter red for hover states */
+  --red-pale:    #fdecea;    /* very light red for backgrounds */
+  --red-border:  #f5b7b1;    /* soft red for borders */
+
+  --white:       #ffffff;
+  --off-white:   #fdf6f6;    /* warm off-white page background */
+  --card-bg:     #ffffff;
+
+  --text-dark:   #3d2b2b;    /* warm dark brown instead of pure black */
+  --text-mid:    #7b5c5c;    /* muted mid tone */
+  --text-light:  #b08080;    /* light muted text */
+
+  --green:       #27ae60;    /* for "available" status */
+  --orange:      #e67e22;    /* for "low stock" status */
+  --gray-line:   #f0e0e0;    /* for borders and dividers */
+
+  --shadow:      0 2px 12px rgba(192, 57, 43, 0.08);
+  --radius:      10px;
+}
+
+/* --- Reset & Base --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--off-white);
+  color: var(--text-dark);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Merriweather', serif;
+  font-weight: 400;
+  color: var(--text-dark);
+}
+
+a {
+  color: var(--red-main);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--red-soft);
+}
+
+/* --- Navigation Bar --- */
+nav {
+  background-color: var(--white);
+  border-bottom: 1px solid var(--gray-line);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.06);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.4rem;
+  font-family: 'Merriweather', serif;
+  color: var(--red-main);
+  font-weight: 400;
+}
+
+.nav-logo span {
+  font-size: 1.6rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.8rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-mid);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--red-main);
+}
+
+.nav-cta {
+  background-color: var(--red-main);
+  color: var(--white) !important;
+  padding: 8px 20px;
+  border-radius: 20px;
+  transition: background-color 0.2s !important;
+}
+
+.nav-cta:hover {
+  background-color: var(--red-soft) !important;
+}
+
+/* --- Page Container --- */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* --- Page Header Section --- */
+.page-header {
+  background-color: var(--red-pale);
+  border-bottom: 1px solid var(--red-border);
+  padding: 3rem 0 2rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.page-header h1 {
+  font-size: 2rem;
+  color: var(--red-main);
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: var(--text-mid);
+  font-size: 1rem;
+}
+
+/* --- Cards --- */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--gray-line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--text-dark);
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: var(--red-main);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: var(--red-soft);
+  color: var(--white);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--red-main);
+  border: 2px solid var(--red-main);
+}
+
+.btn-outline:hover {
+  background-color: var(--red-pale);
+}
+
+.btn-sm {
+  padding: 6px 16px;
+  font-size: 0.85rem;
+}
+
+/* --- Forms --- */
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--red-border);
+  border-radius: 6px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  background-color: var(--white);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--red-main);
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.1);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* --- Blood Type Badge --- */
+.blood-badge {
+  display: inline-block;
+  background-color: var(--red-pale);
+  color: var(--red-main);
+  border: 1px solid var(--red-border);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* --- Status Indicators --- */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.status-good     { background-color: var(--green); }
+.status-low      { background-color: var(--orange); }
+.status-critical { background-color: var(--red-main); }
+
+/* --- Alert / Message Boxes --- */
+.alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.alert-success {
+  background-color: #eafaf1;
+  border: 1px solid #a9dfbf;
+  color: #1e8449;
+}
+
+.alert-error {
+  background-color: var(--red-pale);
+  border: 1px solid var(--red-border);
+  color: var(--red-main);
+}
+
+.alert-warning {
+  background-color: #fef9e7;
+  border: 1px solid #f9e79f;
+  color: #b7770d;
+}
+
+/* --- Footer --- */
+footer {
+  background-color: var(--white);
+  border-top: 1px solid var(--gray-line);
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin-top: 4rem;
+}
+
+footer a {
+  color: var(--red-main);
+}
+
+/* --- Utility --- */
+.text-center  { text-align: center; }
+.text-red     { color: var(--red-main); }
+.text-muted   { color: var(--text-mid); }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-links {
+    display: none;   /* simplify nav on mobile */
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+}

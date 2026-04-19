@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LifeLink — Connecting Donors & Hospitals</title>
+<link rel="stylesheet" href="style.css" />
+
+<style>
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 5rem 0;
+  gap: 3rem;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  color: var(--red-main);
+  line-height: 1.2;
+}
+
+.hero p {
+  margin: 1rem 0 2rem;
+  color: var(--text-mid);
+}
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.2rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.section {
+  padding: 4rem 0;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.request-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  margin-bottom: .8rem;
+}
+
+.urgency-critical { color: red; font-weight: bold; }
+.urgency-urgent { color: orange; font-weight: bold; }
+
+@media(max-width: 768px){
+  .hero { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">🩸 LifeLink</div>
+  <ul class="nav-links">
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="donors.html">Find Donors</a></li>
+    <li><a href="hospitals.html">Blood Banks</a></li>
+    <li><a href="request.html">Request Blood</a></li>
+    <li><a href="register.html" class="nav-cta">Become a Donor</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="container hero">
+  <div>
+    <h1>Every drop is a <br><em>life saved</em></h1>
+    <p>
+      LifeLink connects donors, hospitals, and patients instantly —
+      making blood available when it matters most.
+    </p>
+
+    <a href="register.html" class="btn btn-primary">Become a Donor</a>
+    <a href="request.html" class="btn btn-outline">Request Blood</a>
+  </div>
+
+  <div class="hero-right">
+    <div class="stat-card">
+      <div>🙋</div>
+      <div>
+        <div class="stat-number" id="stat-donors">—</div>
+        <div>Registered Donors</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div>🏥</div>
+      <div>
+        <div class="stat-number" id="stat-hospitals">—</div>
+        <div>Hospitals</div>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div>📋</div>
+      <div>
+        <div class="stat-number" id="stat-requests">—</div>
+        <div>Active Requests</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section container">
+  <h2 class="section-title">How LifeLink Works</h2>
+
+  <div class="grid-3">
+    <div class="card">
+      <h3>1. Register</h3>
+      <p>Donors & hospitals join the platform.</p>
+    </div>
+
+    <div class="card">
+      <h3>2. Connect</h3>
+      <p>Requests match donors instantly.</p>
+    </div>
+
+    <div class="card">
+      <h3>3. Donate</h3>
+      <p>Save lives in your area.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REQUESTS -->
+<section class="section container">
+  <h2 class="section-title">Urgent Requests</h2>
+
+  <div id="urgent-requests">
+    <p>Loading...</p>
+  </div>
+
+  <a href="request.html" class="btn btn-outline">View All</a>
+</section>
+
+<footer>
+  <p>🩸 LifeLink — Saving lives together</p>
+</footer>
+
+<script>
+async function loadStats() {
+  try {
+    const [d, h, r] = await Promise.all([
+      fetch("/api/donors"),
+      fetch("/api/hospitals"),
+      fetch("/api/requests"),
+    ]);
+
+    document.getElementById("stat-donors").textContent = (await d.json()).length;
+    document.getElementById("stat-hospitals").textContent = (await h.json()).length;
+    document.getElementById("stat-requests").textContent = (await r.json()).length;
+
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+async function loadUrgentRequests() {
+  const container = document.getElementById("urgent-requests");
+
+  try {
+    const res = await fetch("/api/requests");
+    const data = await res.json();
+
+    const urgent = data.filter(r =>
+      r.urgency === "critical" || r.urgency === "urgent"
+    ).slice(0, 3);
+
+    if (!urgent.length) {
+      container.innerHTML = "No urgent requests";
+      return;
+    }
+
+    container.innerHTML = urgent.map(r => `
+      <div class="request-item">
+        <div>
+          <strong>${r.requesterName}</strong> (${r.bloodType})<br>
+          ${r.hospital}
+        </div>
+        <div class="urgency-${r.urgency}">
+          ${r.urgency.toUpperCase()}
+        </div>
+      </div>
+    `).join("");
+
+  } catch {
+    container.innerHTML = "Error loading";
+  }
+}
+
+loadStats();
+loadUrgentRequests();
+</script>
+
+</body>
+</html>
