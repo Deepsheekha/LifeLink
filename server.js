@@ -15,9 +15,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-// --- DEBUG ENV ---
-console.log("📧 EMAIL_USER:", process.env.EMAIL_USER);
-
 // --- Connect to MongoDB ---
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/lifelink")
